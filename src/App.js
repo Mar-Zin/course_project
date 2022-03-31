@@ -6,20 +6,14 @@ import Users from "./components/users";
 const App = () => {
   const [users, setUsers] = useState(API.users.fetchAll());
 
-  const bookmarkT = (id) => {
+  const bookmark = (id) => {
     setUsers(
       users.map((user) =>
-        user._id === id ? { ...user, bookmark: true } : { ...user }
+        user._id === id ? { ...user, bookmark: !user.bookmark } : { ...user }
       )
     );
   };
-  const bookmarkF = (id) => {
-    setUsers(
-      users.map((user) =>
-        user._id === id ? { ...user, bookmark: false } : { ...user }
-      )
-    );
-  };
+
   const handleDelete = (id) => {
     setUsers((prevState) => prevState.filter((user) => user !== id));
   };
@@ -54,12 +48,7 @@ const App = () => {
             </tr>
           </thead>
           <tbody>
-            <Users
-              users={users}
-              onDelete={handleDelete}
-              bookmarkT={bookmarkT}
-              bookmarkF={bookmarkF}
-            />
+            <Users users={users} onDelete={handleDelete} bookmark={bookmark} />
           </tbody>
         </table>
       </>
