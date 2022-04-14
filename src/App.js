@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import API from "./api/index";
-import SearchStatus from "./components/searchStatus";
 import Users from "./components/users";
 
 const App = () => {
-    const [users, setUsers] = useState(API.users.fetchAll());
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        API.users.fetchAll().then((data) => {
+            setUsers(data);
+        });
+    }, []);
 
     const handleOnToggle = (id) => {
         setUsers(
@@ -21,14 +26,13 @@ const App = () => {
     };
 
     return (
-        <>
-            <SearchStatus length={users.length} />
+        <div>
             <Users
                 users={users}
                 onDelete={handleDelete}
                 bookmark={handleOnToggle}
             />
-        </>
+        </div>
     );
 };
 
